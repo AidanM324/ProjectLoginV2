@@ -22,4 +22,5 @@ public class PersonService {
         // For simplicity, we return a dummy person here
         return personRepository.findByCustomerId(customerId);
     }
+
 }
