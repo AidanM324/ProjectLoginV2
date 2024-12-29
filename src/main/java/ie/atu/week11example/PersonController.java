@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/login")
@@ -31,6 +32,18 @@ public class PersonController {
         return ResponseEntity.ok(person);
     }
 
+    @GetMapping("/getAllAccounts")
+    public ResponseEntity<?> getAllPersons() {
+
+        List<Person> persons = personService.getAllPersons();
+
+        if (persons == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(persons);
+    }
+
 
     @PostMapping("/create")
     public ResponseEntity<String>create(@Valid @RequestBody Person person) {
@@ -48,5 +61,15 @@ public class PersonController {
     public ResponseEntity<String>updatePerson(@PathVariable String email, @RequestBody Person updatedPerson) {
         personService.updatePerson(email, updatedPerson);
         return new ResponseEntity<>("Account changed successfully", HttpStatus.OK);
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyAccount(@RequestParam String username, @RequestParam String password){
+        try {
+        String message = personService.verify(username, password);
+        return ResponseEntity.ok(message);
+        } catch(Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid username or password");
+        }
     }
 }
