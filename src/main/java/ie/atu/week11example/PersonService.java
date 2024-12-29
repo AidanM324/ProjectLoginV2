@@ -25,6 +25,7 @@ public class PersonService {
         return personRepository.findByCustomerId(customerId);
     }
 
+
     public void deletePerson(Long Id){
         personRepository.deleteById(Id);
     }
