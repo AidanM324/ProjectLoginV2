@@ -35,4 +35,10 @@ public class PersonController {
         personService.savePerson(person);
         return new ResponseEntity<>("Account created successfully", HttpStatus.OK);
     }
+
+    @DeleteMapping("/{Id}")
+    public ResponseEntity<String>delete(@PathVariable Long Id) {
+        personService.deletePerson(Id);
+        return new ResponseEntity<>("Account deleted successfully", HttpStatus.OK);
+    }
 }
