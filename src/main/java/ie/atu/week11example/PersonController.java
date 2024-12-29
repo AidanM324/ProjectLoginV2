@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/person")
+@RequestMapping("/login")
 @RestController
 public class PersonController {
     private final PersonService personService;
@@ -14,13 +14,13 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping("/{employeeId}")
-    public ResponseEntity<?> getPerson(@PathVariable String employeeId) {
-        if (employeeId.length() > 5 || employeeId.isBlank()) {
-            return ResponseEntity.badRequest().body("EmployeeId is invalid");
+    @GetMapping("/{customerId}")
+    public ResponseEntity<?> getPerson(@PathVariable String customerId) {
+        if (customerId.length() > 5 || customerId.isBlank()) {
+            return ResponseEntity.badRequest().body("CustomerId is invalid");
         }
 
-        Person person = personService.getPersonByEmployeeId(employeeId);
+        Person person = personService.getPersonByCustomerId(customerId);
 
         if (person == null) {
             return ResponseEntity.notFound().build();
@@ -29,9 +29,9 @@ public class PersonController {
         return ResponseEntity.ok(person);
     }
 
-    @PostMapping("/createPerson")
+    @PostMapping("/create")
     public ResponseEntity<String>create(@Valid @RequestBody Person person) {
         personService.savePerson(person);
-        return new ResponseEntity<>("Person created successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Account created successfully", HttpStatus.OK);
     }
 }

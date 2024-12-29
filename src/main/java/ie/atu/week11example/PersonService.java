@@ -17,9 +17,9 @@ public class PersonService {
     }
 
     // Placeholder method to retrieve a person by employeeId
-    public Person getPersonByEmployeeId(String employeeId) {
+    public Person getPersonByCustomerId(String customerId) {
         // fetch data from a database in future lab
         // For simplicity, we return a dummy person here
-        return new Person();
+        return personRepository.findByCustomerId(customerId);
     }
 }

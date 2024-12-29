@@ -28,15 +28,12 @@ public class Person {
     private String email;
 
     @NotBlank
-    private String title;
+    private String username;
 
     @NotBlank
-    private String employeeId;
+    private String customerId;
 
     @NotBlank
-    private String position;
-
-    @NotBlank
-    private String department;
+    private String location;
 
 }
