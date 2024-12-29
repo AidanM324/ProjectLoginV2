@@ -1,7 +1,9 @@
 package ie.atu.week11example;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,7 +27,6 @@ public class PersonService {
         return personRepository.findByCustomerId(customerId);
     }
 
-
     public void deletePerson(Long Id){
         personRepository.deleteById(Id);
     }
@@ -41,6 +42,7 @@ public class PersonService {
             existingPerson.setAge(updatedPerson.getAge());
             existingPerson.setEmail(updatedPerson.getEmail());
             existingPerson.setUsername(updatedPerson.getUsername());
+            existingPerson.setPassword(updatedPerson.getPassword());
             existingPerson.setCustomerId(updatedPerson.getCustomerId());
             existingPerson.setLocation(updatedPerson.getLocation());
             personRepository.save(existingPerson);
@@ -49,6 +51,22 @@ public class PersonService {
             //Handle not found scenario
         }
         }
+
+    public List<Person> getAllPersons() {
+        return personRepository.findAll();
+    }
+
+    public String verify(String username, String password){
+        Person person = personRepository.findByUsername(username);
+
+        if(person != null && person.getPassword().equals(password)){
+            return "Login Successful";
+            //should bring you to next url microservice insert link
+        }
+        else{
+            throw new RuntimeException("Invalid username or password");
+        }
+    }
 }
 
 

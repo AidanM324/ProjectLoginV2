@@ -33,6 +33,9 @@ public class Person {
     private String username;
 
     @NotBlank
+    private String password;
+
+    @NotBlank
     private String customerId;
 
     @NotBlank
