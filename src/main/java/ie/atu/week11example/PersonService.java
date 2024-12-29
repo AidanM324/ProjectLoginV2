@@ -2,9 +2,11 @@ package ie.atu.week11example;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PersonService {
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -27,4 +29,25 @@ public class PersonService {
         personRepository.deleteById(Id);
     }
 
+    public void updatePerson(String email, Person updatedPerson){
+        Optional<Person> existingPersonOptional = personRepository.findByEmail(email);
+
+        if(existingPersonOptional.isPresent()){
+            Person existingPerson = existingPersonOptional.get();
+
+            //update fields with the new data
+            existingPerson.setName(updatedPerson.getName());
+            existingPerson.setAge(updatedPerson.getAge());
+            existingPerson.setEmail(updatedPerson.getEmail());
+            existingPerson.setUsername(updatedPerson.getUsername());
+            existingPerson.setCustomerId(updatedPerson.getCustomerId());
+            existingPerson.setLocation(updatedPerson.getLocation());
+            personRepository.save(existingPerson);
+        }
+        else {
+            //Handle not found scenario
+        }
+        }
 }
+
+
