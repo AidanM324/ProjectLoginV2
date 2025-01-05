@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface PersonRepository extends JpaRepository<Person, Long>{
 
-    Person findByCustomerId(String customerId);
-    Person findByUsername(String username);
+    Person findByAccountId(String customerId);
+    Person findByName(String name);
     Optional<Person> findByEmail(String email);
 }

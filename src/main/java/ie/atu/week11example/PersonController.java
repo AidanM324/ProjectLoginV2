@@ -17,13 +17,13 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping("/{customerId}")
-    public ResponseEntity<?> getPerson(@PathVariable String customerId) {
-        if (customerId.length() > 5 || customerId.isBlank()) {
-            return ResponseEntity.badRequest().body("CustomerId is invalid");
+    @GetMapping("/{accountId}")
+    public ResponseEntity<?> getPerson(@PathVariable String accountId) {
+        if (accountId.length() > 5 || accountId.isBlank()) {
+            return ResponseEntity.badRequest().body("AccountId is invalid");
         }
 
-        Person person = personService.getPersonByCustomerId(customerId);
+        Person person = personService.getPersonByAccountId(accountId);
 
         if (person == null) {
             return ResponseEntity.notFound().build();
@@ -64,12 +64,12 @@ public class PersonController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> verifyAccount(@RequestParam String username, @RequestParam String password){
+    public ResponseEntity<?> verifyAccount(@RequestParam String email, @RequestParam String password){
         try {
-        String message = personService.verify(username, password);
+        String message = personService.verify(email, password);
         return ResponseEntity.ok(message);
         } catch(Exception e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid email or password");
         }
     }
 }
