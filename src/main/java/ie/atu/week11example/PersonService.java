@@ -31,8 +31,8 @@ public class PersonService {
         personRepository.deleteById(Id);
     }
 
-    public void updatePerson(String email, Person updatedPerson){
-        Optional<Person> existingPersonOptional = personRepository.findByEmail(email);
+    public void updatePerson(Long Id, Person updatedPerson){
+        Optional<Person> existingPersonOptional = personRepository.findById(Id);
 
         if(existingPersonOptional.isPresent()){
             Person existingPerson = existingPersonOptional.get();

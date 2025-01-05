@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin("*")
 @RequestMapping("/login")
 @RestController
 public class PersonController {
@@ -51,15 +52,15 @@ public class PersonController {
         return new ResponseEntity<>("Account created successfully", HttpStatus.OK);
     }
 
-    @DeleteMapping("/{Id}")
+    @DeleteMapping("/delete/{Id}")
     public ResponseEntity<String>delete(@PathVariable Long Id) {
         personService.deletePerson(Id);
         return new ResponseEntity<>("Account deleted successfully", HttpStatus.OK);
     }
 
-    @PutMapping("/{email}")
-    public ResponseEntity<String>updatePerson(@PathVariable String email, @RequestBody Person updatedPerson) {
-        personService.updatePerson(email, updatedPerson);
+    @PutMapping("/update/{Id}")
+    public ResponseEntity<String>updatePerson(@PathVariable Long Id, @RequestBody Person updatedPerson) {
+        personService.updatePerson(Id, updatedPerson);
         return new ResponseEntity<>("Account changed successfully", HttpStatus.OK);
     }
 

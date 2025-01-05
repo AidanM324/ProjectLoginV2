@@ -8,5 +8,5 @@ public interface PersonRepository extends JpaRepository<Person, Long>{
 
     Person findByAccountId(String customerId);
     Person findByName(String name);
-    Optional<Person> findByEmail(String email);
+    Optional<Person> findById(Long Id);
 }
