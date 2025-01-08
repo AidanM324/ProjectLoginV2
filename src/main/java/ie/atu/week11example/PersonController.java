@@ -18,13 +18,28 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping("/{accountId}")
+    @GetMapping("/get/{accountId}")
     public ResponseEntity<?> getPerson(@PathVariable String accountId) {
         if (accountId.length() > 5 || accountId.isBlank()) {
             return ResponseEntity.badRequest().body("AccountId is invalid");
         }
 
         Person person = personService.getPersonByAccountId(accountId);
+
+        if (person == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(person);
+    }
+
+    @GetMapping("/{Id}")
+    public ResponseEntity<?> getPerson(@PathVariable Long Id) {
+
+        Optional<Person> person = personService.getPersonById(Id);
+        //if (person.isBlank()) {
+        //    return ResponseEntity.badRequest().body("AccountId is invalid");
+        //}
 
         if (person == null) {
             return ResponseEntity.notFound().build();
@@ -58,16 +73,17 @@ public class PersonController {
         return new ResponseEntity<>("Account deleted successfully", HttpStatus.OK);
     }
 
-    @PutMapping("/update/{Id}")
+
+    @PutMapping("/{Id}")
     public ResponseEntity<String>updatePerson(@PathVariable Long Id, @RequestBody Person updatedPerson) {
         personService.updatePerson(Id, updatedPerson);
         return new ResponseEntity<>("Account changed successfully", HttpStatus.OK);
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> verifyAccount(@RequestParam String email, @RequestParam String password){
+    public ResponseEntity<?> verifyAccount(@RequestParam String name, @RequestParam String password){
         try {
-        String message = personService.verify(email, password);
+        String message = personService.verify(name, password);
         return ResponseEntity.ok(message);
         } catch(Exception e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid email or password");

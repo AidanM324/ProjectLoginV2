@@ -1,6 +1,5 @@
 package ie.atu.week11example;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +24,12 @@ public class PersonService {
         // fetch data from a database in future lab
         // For simplicity, we return a dummy person here
         return personRepository.findByAccountId(accountId);
+    }
+
+    public Optional<Person> getPersonById(Long Id) {
+        // fetch data from a database in future lab
+        // For simplicity, we return a dummy person here
+        return personRepository.findById(Id);
     }
 
     public void deletePerson(Long Id){
