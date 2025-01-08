@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin("*")
 @RequestMapping("/login")
 @RestController
 public class PersonController {
@@ -17,13 +18,28 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping("/{customerId}")
-    public ResponseEntity<?> getPerson(@PathVariable String customerId) {
-        if (customerId.length() > 5 || customerId.isBlank()) {
-            return ResponseEntity.badRequest().body("CustomerId is invalid");
+    @GetMapping("/get/{accountId}")
+    public ResponseEntity<?> getPerson(@PathVariable String accountId) {
+        if (accountId.length() > 5 || accountId.isBlank()) {
+            return ResponseEntity.badRequest().body("AccountId is invalid");
         }
 
-        Person person = personService.getPersonByCustomerId(customerId);
+        Person person = personService.getPersonByAccountId(accountId);
+
+        if (person == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(person);
+    }
+
+    @GetMapping("/{Id}")
+    public ResponseEntity<?> getPerson(@PathVariable Long Id) {
+
+        Optional<Person> person = personService.getPersonById(Id);
+        //if (person.isBlank()) {
+        //    return ResponseEntity.badRequest().body("AccountId is invalid");
+        //}
 
         if (person == null) {
             return ResponseEntity.notFound().build();
@@ -51,25 +67,26 @@ public class PersonController {
         return new ResponseEntity<>("Account created successfully", HttpStatus.OK);
     }
 
-    @DeleteMapping("/{Id}")
+    @DeleteMapping("/delete/{Id}")
     public ResponseEntity<String>delete(@PathVariable Long Id) {
         personService.deletePerson(Id);
         return new ResponseEntity<>("Account deleted successfully", HttpStatus.OK);
     }
 
-    @PutMapping("/{email}")
-    public ResponseEntity<String>updatePerson(@PathVariable String email, @RequestBody Person updatedPerson) {
-        personService.updatePerson(email, updatedPerson);
+
+    @PutMapping("/{Id}")
+    public ResponseEntity<String>updatePerson(@PathVariable Long Id, @RequestBody Person updatedPerson) {
+        personService.updatePerson(Id, updatedPerson);
         return new ResponseEntity<>("Account changed successfully", HttpStatus.OK);
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> verifyAccount(@RequestParam String username, @RequestParam String password){
+    public ResponseEntity<?> verifyAccount(@RequestParam String name, @RequestParam String password){
         try {
-        String message = personService.verify(username, password);
+        String message = personService.verify(name, password);
         return ResponseEntity.ok(message);
         } catch(Exception e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid email or password");
         }
     }
 }

@@ -1,6 +1,5 @@
 package ie.atu.week11example;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,29 +20,33 @@ public class PersonService {
     }
 
     // Placeholder method to retrieve a person by employeeId
-    public Person getPersonByCustomerId(String customerId) {
+    public Person getPersonByAccountId(String accountId) {
         // fetch data from a database in future lab
         // For simplicity, we return a dummy person here
-        return personRepository.findByCustomerId(customerId);
+        return personRepository.findByAccountId(accountId);
+    }
+
+    public Optional<Person> getPersonById(Long Id) {
+        // fetch data from a database in future lab
+        // For simplicity, we return a dummy person here
+        return personRepository.findById(Id);
     }
 
     public void deletePerson(Long Id){
         personRepository.deleteById(Id);
     }
 
-    public void updatePerson(String email, Person updatedPerson){
-        Optional<Person> existingPersonOptional = personRepository.findByEmail(email);
+    public void updatePerson(Long Id, Person updatedPerson){
+        Optional<Person> existingPersonOptional = personRepository.findById(Id);
 
         if(existingPersonOptional.isPresent()){
             Person existingPerson = existingPersonOptional.get();
 
             //update fields with the new data
             existingPerson.setName(updatedPerson.getName());
-            existingPerson.setAge(updatedPerson.getAge());
             existingPerson.setEmail(updatedPerson.getEmail());
-            existingPerson.setUsername(updatedPerson.getUsername());
             existingPerson.setPassword(updatedPerson.getPassword());
-            existingPerson.setCustomerId(updatedPerson.getCustomerId());
+            existingPerson.setAccountId(updatedPerson.getAccountId());
             existingPerson.setLocation(updatedPerson.getLocation());
             personRepository.save(existingPerson);
         }
@@ -56,15 +59,15 @@ public class PersonService {
         return personRepository.findAll();
     }
 
-    public String verify(String username, String password){
-        Person person = personRepository.findByUsername(username);
+    public String verify(String name, String password){
+        Person person = personRepository.findByName(name);
 
         if(person != null && person.getPassword().equals(password)){
             return "Login Successful";
             //should bring you to next url microservice insert link
         }
         else{
-            throw new RuntimeException("Invalid username or password");
+            throw new RuntimeException("Invalid name or password");
         }
     }
 }

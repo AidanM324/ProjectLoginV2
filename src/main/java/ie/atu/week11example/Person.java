@@ -23,20 +23,14 @@ public class Person {
     @NotBlank
     private String name;
 
-    @Min(18)
-    private int age;
-
     @Email
     private String email;
-
-    @NotBlank
-    private String username;
 
     @NotBlank
     private String password;
 
     @NotBlank
-    private String customerId;
+    private String accountId;
 
     @NotBlank
     private String location;
